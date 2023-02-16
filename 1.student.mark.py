@@ -9,6 +9,7 @@ def numofstudentGET():
                 break
         except ValueError:
             continue
+    print("=========================================================================================")
     return numofstudent
 
 
@@ -19,7 +20,8 @@ def studentinfoGET(numofstudent):
         student[i][1] = input("Student Name: ")
         sDoB, sMoB, sYoB = input("DoB (DD/MM/YYYY): ").split("/")
         student[i][2] = date(int(sYoB), int(sMoB), int (sDoB))
-        i = i+1
+        print("=================================")
+    print("*****************************************************************************************")
     return student
 
 def numofcourseGET():
@@ -30,6 +32,7 @@ def numofcourseGET():
                 break
         except ValueError:
             continue
+    print("=========================================================================================")
     return numofcourse
 
 
@@ -38,7 +41,8 @@ def courseinfoGET(numofcourse):
     for i in range (0, numofcourse):
         course[i][0] = str (input("Course ID: "))
         course[i][1] = input("Course Name: ")
-        i = i+1
+        print("=================================")
+    print("*****************************************************************************************")
     return course
 
 def transformerStudent(student):
@@ -74,12 +78,54 @@ def markLISTING(student, course, mark):
     for i in range (len(student)):
          print("{}. ID: {} , Name: {} , Mark: {} \n".format(i+1, student[i][0],student[i][1],mark[i][j]))
 
+def menuGET():
+    a = """Choose what you want to do:
+    1. See the list of Students.                        2. See the list of Courses
+    3. See the MARKSHEET of any course.                 4. Input mark for any course    
+                                        5. EXIT"""
+    print(a)
+    print("=========================================================================================")
+    menu = int (input("You choose: "))
+    return menu
+
 numofstudent = numofstudentGET()
 student = studentinfoGET(numofstudent)
 numofcourse = numofcourseGET()
 course = courseinfoGET(numofcourse)
-mark = markGET(student, course)
-studentLISTING(student)
-courseLISTING(course)
-markLISTING(student, course, mark)
-       
+mark = [[0 for i in range (numofcourse)]  for i in range (numofstudent)]
+while True:
+    menu = menuGET()
+    match menu:
+        case 1:
+            studentLISTING(student)
+            input("Press Enter to continue...")
+            print("=========================================================================================")
+
+        case 2:
+            courseLISTING(course)
+            input("Press Enter to continue...")
+            print("=========================================================================================")
+
+        case 3:
+            print("Choose the Course you want to see the Marksheet \n")
+            for i in range(len(course)):
+                print("{}. {} \n".format(i+1, course[i][1]))
+            j = int (input("You choose: "))
+            print("MARKSHEET FOR {} COURSE".format(course[j-1][1]))
+            for i in range (len(student)):
+                print("{}. ID: {} , Name: {} , Mark: {} \n".format(i+1, student[i][0],student[i][1],mark[i][j-1]))
+            input("Press Enter to continue...")
+            print("=========================================================================================")
+        
+        case 4:
+            print("Choose the Course you want to update Marks \n")
+            for i in range(len(course)):
+                print("{}. {} \n".format(i+1, course[i][1]))
+            j = int (input("You choose: "))
+            for i in range (len(student)):
+                mark[i][j-1] = input("{}'s mark for {} course ( -1 if he/she doesn't take this course ):  ".format(student[i][1], course[j-1][1]))
+            input("Press Enter to continue...")
+            print("=========================================================================================")
+        case 5:
+            break
+        
